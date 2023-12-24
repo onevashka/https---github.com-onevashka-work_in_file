@@ -5,7 +5,9 @@ def show_menu():
           "4. Удалить запись",
           "5. Найти абонента в справочник",
           "6. Добавить абонента в справочник ",
-          "7. Закончить работу", sep="\n")
+          "7. Перенос строки данных в новый файл", 
+          "8. Закончить работу",
+          sep="\n")
 
 def read_text(filename):
 
@@ -37,7 +39,7 @@ def work_with_phonebook():
     show_menu()
     choice = int(input("Что вас интересует ? "))
 
-    while choice != 7:
+    while choice != 8:
         if choice == 1:
             print(read_text("phonebook.csv"))
         elif choice == 2:
@@ -62,9 +64,13 @@ def work_with_phonebook():
         elif choice == 6:
             user_data = {"Фамилия": None, "Имя": None, "Телефон": None, "Описание": None}
             for i in user_data:
-                data = input("Введите данные абонента по очереди: фамилия, имя, телефон, описание")
+                data = input("Введите данные абонента по очереди: фамилия, имя, телефон, описание: ")
                 user_data[i] = data
             add_user(user_data)
+        elif choice == 7:
+            new_file = input("Введите название нового файл: ")
+            number = int(input("Введите строку, которую хотите перенести: "))
+            write_to_a_new_file(new_file, number)
             
         show_menu()
         choice = int(input("Что вас интересует ? "))
@@ -117,7 +123,17 @@ def add_user(user_data):
     phone_book.append(user_data)
     
     write_txt("phonebook.csv", phone_book)
-   
+
+def write_to_a_new_file(new_file, number):
+    temporary_list = [] 
+    number -= 1
+    phone_book = (read_text("phonebook.csv"))
+    for i in range(len(phone_book) - 1):
+        if number == i:
+            temporary_list.append(phone_book[i])
+
+    write_txt(new_file, temporary_list)
+    print("Новый файл был создан с новыми данными")
 
 work_with_phonebook()
 
